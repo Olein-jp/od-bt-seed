@@ -1,0 +1,26 @@
+name: WordPress テーマをリリース
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: main 上のコミットであることを確認
+        run: git merge-base --is-ancestor HEAD refs/remotes/origin/main
+      - name: インストール用 ZIP を生成
+        run: python3 scripts/package-theme.py "$GITHUB_REF_NAME" dist
+      - name: GitHub Releases に公開
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "dist/od-bt-seed-$GITHUB_REF_NAME.zip" --verify-tag --generate-notes

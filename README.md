@@ -1,6 +1,6 @@
 # OD BT Seed
 
-WordPress ブロックテーマ開発用のスターターテーマです。テーマの最小対応バージョンは WordPress 6.6 です。ローカル環境では初回起動時に最新の安定版 WordPress を取得します。
+WordPress ブロックテーマ開発用のスターターテーマです。最小対応バージョンとローカル開発環境の WordPress は 7.1.5 です。
 
 ## ローカル環境を起動する
 
@@ -36,3 +36,17 @@ npm run env:start
 - `parts/` にヘッダーとフッターを置きます。
 
 GitHub Actions はテーマが有効なブロックテーマとして認識されることと、フロントページに投稿一覧が表示されることを確認します。
+
+## リリースする
+
+`style.css` の `Version` を更新してコミットし、`main` をプッシュします。次に、同じコミットを指すバージョンタグを作成してプッシュします。
+
+```sh
+git push origin main
+git tag v0.1.0 main
+git push origin v0.1.0
+```
+
+GitHub Actions がタグのコミットとバージョンを検証し、`od-bt-seed-v0.1.0.zip` を GitHub Releases に添付します。この ZIP は WordPress の「外観 → テーマ → 新しいテーマを追加 → テーマのアップロード」からインストールできます。
+
+ローカルで同じ ZIP を生成するには、Python 3.9 以降で `python3 scripts/package-theme.py v0.1.0 dist` を実行します。

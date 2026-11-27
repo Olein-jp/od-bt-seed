@@ -1,5 +1,6 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"core": "https://wordpress.org/wordpress-7.1.5.zip",
 	"themes": ["."],
 	"lifecycleScripts": {
 		"afterStart": "npm run env:cli -- theme activate od-bt-seed"
