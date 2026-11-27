@@ -20,7 +20,8 @@ def main():
         parser.error("タグは vMAJOR.MINOR.PATCH の形式で指定してください")
 
     for name in REQUIRED_FILES:
-        if not (THEME_ROOT / name).is_file():
+        file = THEME_ROOT / name
+        if not file.is_file() or not file.resolve().is_relative_to(THEME_ROOT):
             parser.error(f"テーマの必須ファイルがありません: {name}")
 
     stylesheet = (THEME_ROOT / "style.css").read_text(encoding="utf-8")

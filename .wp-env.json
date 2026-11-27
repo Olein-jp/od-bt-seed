@@ -7,6 +7,7 @@
 	},
 	"config": {
 		"WP_DEBUG": true,
+		"WP_DEVELOPMENT_MODE": "theme",
 		"SCRIPT_DEBUG": true
 	}
 }

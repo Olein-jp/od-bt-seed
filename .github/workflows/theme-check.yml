@@ -1,6 +1,10 @@
 name: ブロックテーマの起動確認
 
-on: [push, pull_request]
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_call:
 
 permissions:
   contents: read
@@ -22,5 +26,8 @@ jobs:
         run: |
           npm run env:cli -- theme is-active od-bt-seed
           npm run env:cli -- eval 'if ( ! wp_is_block_theme() ) { WP_CLI::error( "ブロックテーマとして認識されていません。" ); }'
+          npm run env:cli -- eval 'if ( ! WP_Block_Patterns_Registry::get_instance()->is_registered( "od-bt-seed/section-intro" ) ) { WP_CLI::error( "セクションパターンが登録されていません。" ); }'
           curl --fail --silent --show-error http://localhost:8888/ --output "$RUNNER_TEMP/theme-home.html"
           grep -Eq 'class="[^"]*wp-block-query([[:space:]]|")' "$RUNNER_TEMP/theme-home.html"
+          curl --fail --silent --show-error 'http://localhost:8888/?s=od-seed-smoke-test-no-results' --output "$RUNNER_TEMP/theme-search.html"
+          grep -Fq 'No posts found.' "$RUNNER_TEMP/theme-search.html"

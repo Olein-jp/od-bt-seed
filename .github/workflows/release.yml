@@ -5,12 +5,16 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write
-
 jobs:
+  check:
+    uses: ./.github/workflows/theme-check.yml
+    permissions:
+      contents: read
   release:
+    needs: check
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v7
         with:

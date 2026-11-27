@@ -1,4 +1,4 @@
-# OD BT Seed
+# OD Seed
 
 WordPress ブロックテーマ開発用のスターターテーマです。最小対応バージョンとローカル開発環境の WordPress は 7.1.5 です。
 
@@ -29,13 +29,18 @@ npm run env:start
 
 ポートを変更する場合は、リポジトリのルートに `.wp-env.override.json` を作り、たとえば `{"port": 8890}` と記述します。接続先は `npm run env:status` で確認できます。
 
+GitHub Actions はテーマの有効化、パターンの登録、投稿一覧と検索結果が空の場合の表示を確認します。
+
 ## テーマファイル
 
-- `theme.json` にグローバル設定とテンプレートパーツの定義を置きます。
-- `templates/` に投稿一覧などのフォールバックと、投稿・固定ページの個別表示テンプレートを置きます。
-- `parts/` にヘッダーとフッターを置きます。
+- `theme.json` で配色、書体、文字サイズ、余白、コンテンツ幅を設定します。
+- `templates/` には投稿一覧、個別投稿、固定ページ、アーカイブ、検索結果、404 ページの基本テンプレートがあります。
+- `parts/` にはナビゲーション付きヘッダーとフッターがあります。
+- `patterns/` のセクション導入、2 カラムの紹介、FAQ はブロックエディターから挿入できます。
 
-GitHub Actions はテーマが有効なブロックテーマとして認識されることと、フロントページに投稿一覧が表示されることを確認します。
+## 案件ごとのテーマを作る
+
+OD Seed を有効化してサイトエディターでスタイルやテンプレートを調整し、[Create Block Theme](https://wordpress.org/plugins/create-block-theme/) で有効なテーマを複製します。案件用にテーマ名とスラッグを付け、複製したテーマを有効化してナビゲーションやテンプレートを確認します。
 
 ## リリースする
 
@@ -47,6 +52,6 @@ git tag v0.1.0 main
 git push origin v0.1.0
 ```
 
-GitHub Actions がタグのコミットとバージョンを検証し、`od-bt-seed-v0.1.0.zip` を GitHub Releases に添付します。この ZIP は WordPress の「外観 → テーマ → 新しいテーマを追加 → テーマのアップロード」からインストールできます。
+GitHub Actions でテーマの起動確認が通ると、タグのコミットとバージョンを検証し、`od-bt-seed-v0.1.0.zip` を GitHub Releases に添付します。この ZIP は WordPress の「外観 → テーマ → 新しいテーマを追加 → テーマのアップロード」からインストールできます。
 
 ローカルで同じ ZIP を生成するには、Python 3.9 以降で `python3 scripts/package-theme.py v0.1.0 dist` を実行します。
