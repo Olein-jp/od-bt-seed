@@ -1,0 +1,26 @@
+name: ブロックテーマの起動確認
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: node -e 'JSON.parse(require("node:fs").readFileSync("theme.json", "utf8"))'
+      - run: npm ci
+      - run: npm run env:start
+      - name: テーマの有効化と表示を確認
+        run: |
+          npm run env:cli -- theme is-active od-bt-seed
+          npm run env:cli -- eval 'if ( ! wp_is_block_theme() ) { WP_CLI::error( "ブロックテーマとして認識されていません。" ); }'
+          curl --fail --silent --show-error http://localhost:8888/ --output "$RUNNER_TEMP/theme-home.html"
+          grep -Eq 'class="[^"]*wp-block-query([[:space:]]|")' "$RUNNER_TEMP/theme-home.html"
